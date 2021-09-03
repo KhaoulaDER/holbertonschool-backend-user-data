@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-""" DB module to save and update databse
+"""
+DB model
+0x08. User authentication service
+holbertonschool-web_back_end
 """
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -48,14 +51,14 @@ class DB:
         return record
 
     def update_user(self, user_id: int, **kwargs) -> None:
-        """[update_user]
-        Args:
-            user_id ([str]): [description]
-        """
-        user = self.find_user_by(id=user_id)
-        for k, v in kwargs.items():
-            if not hasattr(user, k):
-                raise ValueError
+        """ Finds user record and updates attributes """
+        user_record = self.find_user_by(id=user_id)
+
+        for key, value in kwargs.items():
+            if hasattr(user_record, key):
+                setattr(user_record, key, value)
             else:
-                setattr(user, k, v)
+                raise ValueError
+
         self._session.commit()
+        return None
