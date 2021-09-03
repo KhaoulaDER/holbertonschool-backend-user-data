@@ -52,12 +52,10 @@ class DB:
         Args:
             user_id ([str]): [description]
         """
-        user_record = self.find_user_by(id=user_id)
-
-        for key, value in kwargs.items():
-            if hasattr(user_record, key):
-                setattr(user_record, key, value)
-            else:
+        user = self.find_user_by(id=user_id)
+        for k, v in kwargs.items():
+            if not hasattr(user, k):
                 raise ValueError
+            else:
+                setattr(user, k, v)
         self._session.commit()
-        return None
