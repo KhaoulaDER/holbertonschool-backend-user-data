@@ -22,7 +22,7 @@ class DB:
         self.__session = None
 
     @property
-    def _session(self) :
+    def _session(self) -> Session:
         """ Memoized session object """
         if self.__session is None:
             DBSession = sessionmaker(bind=self._engine)
@@ -59,6 +59,5 @@ class DB:
                 setattr(user_record, key, value)
             else:
                 raise ValueError
-
         self._session.commit()
         return None
