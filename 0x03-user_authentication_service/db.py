@@ -39,15 +39,25 @@ class DB:
         return new_user
 
     def find_user_by(self, **kwargs) -> User:
-        """ Returns first row found in users table based on keyword args """
+        """
+        Description: Find a user by keyword argument
+        Args:
+            keyword argument([dict]): [user Input]
+        Return:
+            user instance if user exist or raise an Error
+        """
 
         try:
-            record = self._session.query(User).filter_by(**kwargs).first()
-        except TypeError:
+            dec = list(kwargs.items())
+            user = self._session.query(User).filter(
+                getattr(User, dec[0][0]) == dec[0][1]).first()
+        except InvalidRequestError:
             raise InvalidRequestError
-        if record is None:
+        except AttributeError:
             raise NoResultFound
-        return record
+        if user is None:
+            raise NoResultFound
+        return user
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """ Finds user record and updates attributes """
