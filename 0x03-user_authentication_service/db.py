@@ -49,11 +49,11 @@ class DB:
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """ Finds user record and updates attributes """
-        user_record = self.find_user_by(id=user_id)
+        user = self.find_user_by(id=user_id)
 
         for key, value in kwargs.items():
-            if hasattr(user_record, key):
-                setattr(user_record, key, value)
+            if hasattr(user, key):
+                setattr(user, key, value)
             else:
                 raise ValueError
 
